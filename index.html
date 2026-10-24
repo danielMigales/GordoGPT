@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="GordoGPT: estadísticas y backtesting experimental de El Gordo de la Primitiva.">
+  <title>GordoGPT · Laboratorio estadístico</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="GordoGPT inicio"><span class="brand-mark">G</span><span>GordoGPT</span></a>
+    <span class="tag">LABORATORIO EXPERIMENTAL</span>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">EL GORDO DE LA PRIMITIVA</p>
+      <h1>Estadística, sin promesas mágicas.</h1>
+      <p class="intro">Explora un modelo de transición tipo Markov y mide su comportamiento con backtesting cronológico, sin filtrar resultados futuros.</p>
+      <div class="notice" id="data-status" role="status">Cargando historial…</div>
+    </section>
+
+    <section class="metrics" aria-label="Resumen del historial">
+      <article class="metric"><span>Sorteos válidos</span><strong id="draw-count">—</strong></article>
+      <article class="metric"><span>Último sorteo del archivo</span><strong id="last-date">—</strong></article>
+      <article class="metric"><span>Backtesting</span><strong id="backtest-count">—</strong></article>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">01 / MODELO</p><h2>Combinación experimental</h2></div><button id="refresh-btn" class="button secondary" type="button">Recalcular</button></div>
+      <p class="muted">Se puntúan los números por frecuencia histórica y por transiciones entre sorteos consecutivos. La clave se modela por separado.</p>
+      <div id="prediction" class="prediction"><p class="muted">Añade un historial validado para calcular una combinación.</p></div>
+      <p id="model-note" class="small muted">No hay predicción hasta disponer de historial suficiente.</p>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">02 / VALIDACIÓN</p><h2>Backtesting walk-forward</h2></div></div>
+      <p class="muted">Cada prueba predice el siguiente sorteo usando solo el historial anterior. Los resultados no prueban que el modelo supere al azar.</p>
+      <div class="metrics compact">
+        <article class="metric"><span>Predicciones evaluadas</span><strong id="bt-tests">0</strong></article>
+        <article class="metric"><span>Aciertos medios (5 números)</span><strong id="bt-mean">—</strong></article>
+        <article class="metric"><span>Máximo de aciertos</span><strong id="bt-max">—</strong></article>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Fecha evaluada</th><th>Predicción</th><th>Resultado</th><th>Aciertos</th></tr></thead><tbody id="bt-rows"><tr><td colspan="4" class="muted">Importa sorteos para ejecutar la prueba.</td></tr></tbody></table></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">03 / DATOS</p><h2>Historial de sorteos</h2></div></div>
+      <p class="muted">Importa un archivo JSON con el formato descrito en el README. Los datos se procesan en este navegador y no se envían a un servidor.</p>
+      <label class="upload button secondary" for="file-input">Importar historial JSON</label>
+      <input id="file-input" type="file" accept=".json,application/json">
+      <button id="reset-btn" class="button danger" type="button">Restablecer datos de sesión</button>
+      <p id="import-status" class="small muted" aria-live="polite">El historial incluido en el repositorio está vacío intencionadamente hasta verificar resultados oficiales.</p>
+    </section>
+    <footer><p>GordoGPT es un proyecto estadístico experimental e independiente. No predice resultados con certeza ni está afiliado a SELAE.</p><p><a href="https://www.loteriasyapuestas.es/" target="_blank" rel="noreferrer">Consultar la fuente oficial de loterías</a> · <a href="https://github.com/danielMigales/GordoGPT" target="_blank" rel="noreferrer">Código fuente</a></p></footer>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
