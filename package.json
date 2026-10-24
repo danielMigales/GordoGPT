@@ -1,0 +1,13 @@
+{
+  "name": "gordogpt",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Laboratorio experimental para El Gordo de la Primitiva",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
