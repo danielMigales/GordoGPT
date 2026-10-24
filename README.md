@@ -3,7 +3,7 @@
 Aplicación experimental para analizar El Gordo de la Primitiva.
 
 ## Estado actual
-- Interfaz estática lista para GitHub Pages o Vercel.
+- Interfaz estática preparada para publicarse en GitHub Pages.
 - Modelo de transición tipo Markov con suavizado.
 - Backtesting cronológico: cada predicción utiliza únicamente sorteos anteriores.
 - Pruebas automáticas con Node.js.
