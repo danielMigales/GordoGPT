@@ -7,7 +7,7 @@ Aplicación experimental para analizar El Gordo de la Primitiva.
 - Modelo de transición tipo Markov con suavizado.
 - Backtesting cronológico: cada predicción utiliza únicamente sorteos anteriores.
 - Pruebas automáticas con Node.js.
-- **El historial empieza vacío deliberadamente**: no se inventan resultados. Importa un JSON validado con sorteos oficiales antes de interpretar predicciones.
+- El archivo `data/sorteos.json` incluye 42 sorteos de 2026 (hasta el 18 de octubre de 2026). Contrasta siempre los resultados con la fuente oficial de SELAE antes de sacar conclusiones.
 
 ## Formato de datos
 
@@ -25,11 +25,15 @@ Requiere Node.js 20 o superior:
 npm test
 ```
 
-## Publicar en Vercel
-1. Entra en https://vercel.com/ e inicia sesión con GitHub.
-2. Importa `danielMigales/GordoGPT`.
-3. Framework preset: **Other**; build command vacío; output directory `.`.
-4. Pulsa Deploy.
+## Publicar en GitHub Pages
+El sitio se publica con GitHub Actions, sin necesidad de Vercel.
+
+1. En el repositorio, abre **Settings → Pages**.
+2. En **Build and deployment → Source**, selecciona **GitHub Actions** y guarda.
+3. Abre **Actions** y comprueba el workflow **Deploy GordoGPT to GitHub Pages**. Cuando termine correctamente, la web estará en https://danielmigales.github.io/GordoGPT/.
+4. Los siguientes cambios en `main` se publicarán automáticamente.
+
+El workflow prepara una carpeta estática con `index.html`, `styles.css`, `app.js`, `src/` y `data/`.
 
 ## Limitaciones
 Las loterías son procesos aleatorios. Markov y las frecuencias históricas no garantizan aciertos ni demuestran una ventaja predictiva. El backtesting es descriptivo y debe compararse con una línea base aleatoria. No apuestes dinero que no puedas permitirte perder.
