@@ -28,7 +28,7 @@
     </section>
 
     <section class="panel">
-      <div class="section-heading"><div><p class="eyebrow">01 / COMBINACIONES</p><h2>Combinación del modelo</h2></div><button id="refresh-btn" class="button secondary" type="button">Actualizar</button></div>
+      <div class="section-heading"><div><p class="eyebrow">01 / COMBINACIONES</p><h2>Combinación del modelo</h2></div><button id="refresh-btn" class="button secondary" type="button">Recalcular análisis</button></div>
       <p class="muted">La combinación principal es reproducible con el mismo historial. Las alternativas se generan al azar dentro del universo elegido; no tienen más probabilidad matemática de ganar.</p>
       <div id="prediction" class="prediction"><p class="muted">Cargando datos…</p></div>
       <p id="model-note" class="small muted">Esperando historial suficiente.</p>
@@ -85,9 +85,9 @@
         <button id="export-csv-btn" class="button secondary" type="button">Exportar CSV</button>
         <button id="reset-btn" class="button danger" type="button">Volver al historial incluido</button>
       </div>
-      <p id="import-status" class="small muted" aria-live="polite">El archivo inicial es una muestra de trabajo; comprueba cada resultado con la fuente oficial antes de usarlo.</p>
+      <p id="import-status" class="small muted" aria-live="polite">La actualización automática consulta las páginas de resultados de SELAE mediante GitHub Actions. Si falla la lectura o la validación, conserva el último historial válido.</p>
     </section>
-    <footer><p>GordoGPT es un proyecto estadístico experimental e independiente. No predice resultados con certeza ni está afiliado a SELAE.</p><p><a href="https://www.loteriasyapuestas.es/" target="_blank" rel="noreferrer">Consultar SELAE</a> · <a href="https://github.com/danielMigales/GordoGPT" target="_blank" rel="noreferrer">Código fuente</a> · <a href="https://github.com/danielMigales/GordoGPT/actions" target="_blank" rel="noreferrer">Estado de pruebas y publicación</a></p></footer>
+    <footer><p>GordoGPT es un proyecto estadístico experimental e independiente. No predice resultados con certeza ni está afiliado a SELAE.</p><p><a href="https://www.loteriasyapuestas.es/es/gordo-primitiva/resultados" target="_blank" rel="noreferrer">Resultados oficiales SELAE</a> · <a href="https://github.com/danielMigales/GordoGPT" target="_blank" rel="noreferrer">Código fuente</a> · <a href="https://github.com/danielMigales/GordoGPT/actions" target="_blank" rel="noreferrer">Estado de pruebas y publicación</a></p></footer>
   </main>
   <script type="module" src="./app.js"></script>
 </body>
