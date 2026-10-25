@@ -49,7 +49,7 @@ function renderAnalysis() {
   renderBars("range-stats",stats.ranges,"label",Math.max(...stats.ranges.map(x=>x.count)));
   renderRanks("hot-numbers",stats.hottest,"number");
   renderRanks("cold-numbers",stats.coldest,"number");
-  renderBars("key-stats",stats.keyFrequencies.map(k=>({...k,label:String(k.key)}),"label",Math.max(...stats.keyFrequencies.map(x=>x.count)));
+  renderBars("key-stats",stats.keyFrequencies.map(k=>({...k,label:String(k.key)})),"label",Math.max(...stats.keyFrequencies.map(x=>x.count)));
 }
 function render() {
   $("draw-count").textContent=draws.length;
