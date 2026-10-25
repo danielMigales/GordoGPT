@@ -1,0 +1,11 @@
+{
+  "source": "SELAE",
+  "sourceUrl": "https://www.loteriasyapuestas.es/es/gordo-primitiva/resultados",
+  "updatedAt": "2026-10-25T21:17:00Z",
+  "year": 2026,
+  "drawCount": 42,
+  "latestDraw": "2026-10-18",
+  "verification": "Los 42 sorteos incluidos, del 04/01/2026 al 18/10/2026, se contrastaron manualmente con la página oficial de resultados de cada sorteo.",
+  "verificationMethod": "manual-official-pages",
+  "automaticRefresh": "No activa: GitHub-hosted runners reciben HTTP 403 de SELAE; se requiere ejecutar el script desde un entorno con acceso autorizado."
+}
