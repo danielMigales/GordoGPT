@@ -64,14 +64,13 @@ export function predictNext(draws) {
 
 export function generateAlternative(draws, mode = "equilibrada") {
   if (!Array.isArray(draws) || draws.length < 2) throw new Error("Se necesitan al menos dos sorteos para generar una combinación.");
-  const { scores } = rankedScores(draws);
   const all = Array.from({length:54},(_,i)=>i+1);
+  const counts = Array(55).fill(0);
+  draws.forEach(d=>d.numbers.forEach(n=>counts[n]++));
   let pool = all;
   if (mode === "frecuencia") {
-    pool = [...all].sort((a,b)=>scores[b]-scores[a] || a-b).slice(0,24);
+    pool = [...all].sort((a,b)=>counts[b]-counts[a] || a-b).slice(0,24);
   } else if (mode === "menos-frecuentes") {
-    const counts = Array(55).fill(0);
-    draws.forEach(d=>d.numbers.forEach(n=>counts[n]++));
     pool = [...all].sort((a,b)=>counts[a]-counts[b] || a-b).slice(0,30);
   }
   const shuffled = [...pool];
