@@ -100,7 +100,7 @@ async function loadInitial() {
     if(stored){
       try { draws=validateDraws(JSON.parse(stored)); historySource="local"; $("import-status").textContent="Se ha recuperado el historial guardado en este navegador."; }
       catch { draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled"; $("import-status").textContent="El historial local guardado no era válido; se ha cargado el archivo incluido."; }
-    } else { draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled"; $("import-status").textContent=bundledMetadata ? "Historial descargado y validado desde las páginas oficiales de SELAE." : "Historial incluido cargado; todavía no hay metadatos de verificación oficial."; }
+    } else { draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled"; $("import-status").textContent=bundledMetadata ? "Historial contrastado manualmente con las páginas oficiales de SELAE." : "Historial incluido cargado; todavía no hay metadatos de verificación oficial."; }
   } catch(error) {
     $("import-status").textContent=`No se pudo cargar el historial inicial: ${error.message}`;
     draws=[];
