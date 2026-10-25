@@ -25,7 +25,12 @@ MONTHS = {
     "enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5, "junio": 6,
     "julio": 7, "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12,
 }
-HEADERS = {"User-Agent": "GordoGPT-results-bot/1.0 (public lottery results verification)"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+    "Referer": RESULTS_URL,
+}
 
 
 class TextParser(HTMLParser):
@@ -48,7 +53,11 @@ class TextParser(HTMLParser):
 
 def fetch(url: str) -> str:
     req = Request(url, headers=HEADERS)
-    with urlopen(req, timeout=30) as response:
+    try:
+        response_context = urlopen(req, timeout=30)
+    except Exception as error:
+        raise RuntimeError(f"No se pudo acceder a la fuente SELAE ({url}): {error}. SELAE puede bloquear conexiones desde entornos alojados fuera de España; no se ha modificado el historial.") from error
+    with response_context as response:
         if response.status != 200:
             raise RuntimeError(f"SELAE devolvió HTTP {response.status}: {url}")
         return response.read().decode("utf-8", errors="replace")
