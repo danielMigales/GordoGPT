@@ -15,9 +15,9 @@ Laboratorio estadístico experimental e independiente para **El Gordo de la Prim
 
 ## Estado y procedencia de los datos
 
-El historial incluido en `data/sorteos.json` contiene 42 sorteos de 2026 hasta el 18 de octubre. La página oficial de resultados muestra el sorteo más reciente del 18/10/2026; no obstante, la aplicación no marca el archivo incluido como verificado automáticamente sorteo por sorteo.
+El historial incluido en `data/sorteos.json` contiene 42 sorteos de 2026, del 4 de enero al 18 de octubre. Los 42 registros se contrastaron manualmente con las páginas oficiales de SELAE, una por cada sorteo. La verificación está documentada en `data/metadata.json`.
 
-Se probó la descarga desde GitHub Actions, pero SELAE respondió HTTP 403 a los runners alojados de GitHub. Para evitar presentar un proceso fallido como una automatización funcional, no hay una tarea programada activa. No se reemplaza el historial cuando no se puede completar la descarga y validación.
+Se probó la descarga desde GitHub Actions, pero SELAE respondió HTTP 403 a los runners alojados de GitHub. Para evitar presentar un proceso fallido como una automatización funcional, no hay una tarea programada activa. El historial actual está verificado manualmente; las actualizaciones futuras necesitan ejecutarse desde un entorno con acceso permitido a SELAE.
 
 - [Resultados oficiales de El Gordo de la Primitiva](https://www.loteriasyapuestas.es/es/gordo-primitiva/resultados)
 - [Workflow de despliegue](https://github.com/danielMigales/GordoGPT/actions)
