@@ -1,6 +1,6 @@
 # GordoGPT
 
-Laboratorio estadístico experimental e independiente para **El Gordo de la Primitiva**. Explora resultados oficiales, evalúa métodos y documenta su rendimiento sin prometer premios.
+Laboratorio estadístico experimental e independiente para **El Gordo de la Primitiva**. Explora resultados, evalúa métodos y documenta su rendimiento sin prometer premios.
 
 ## Funciones
 
@@ -10,20 +10,29 @@ Laboratorio estadístico experimental e independiente para **El Gordo de la Prim
 - Backtesting walk-forward: cada predicción usa solo sorteos anteriores.
 - Referencia matemática: una selección aleatoria de cinco números de 54 tiene una esperanza de 25/54 ≈ 0,463 aciertos principales por sorteo; la probabilidad aleatoria de acertar la clave es 10%.
 - Importación JSON validada, almacenamiento local del historial importado y exportación JSON/CSV.
-- Actualización automática del historial desde las páginas de resultados de SELAE mediante GitHub Actions, con validación antes de reemplazar los datos.
+- Script de verificación para descargar resultados desde las páginas oficiales de SELAE, validar el historial y actualizar los archivos de datos.
 - Pruebas automáticas de JavaScript y del lector de resultados oficiales.
 
-## Actualización oficial de resultados
+## Estado y procedencia de los datos
 
-El workflow `Actualizar resultados oficiales SELAE` se ejecuta semanalmente los lunes a las 03:15 UTC y puede iniciarse manualmente desde **Actions → Actualizar resultados oficiales SELAE → Run workflow**.
+El historial incluido en `data/sorteos.json` contiene 42 sorteos de 2026 hasta el 18 de octubre. La página oficial de resultados muestra el sorteo más reciente del 18/10/2026; no obstante, la aplicación no marca el archivo incluido como verificado automáticamente sorteo por sorteo.
 
-El proceso consulta el listado oficial y las páginas individuales de resultados del año en curso. Valida fechas, cinco números distintos entre 1 y 54 y clave entre 0 y 9. Solo después de validar el historial completo del año escribe `data/sorteos.json` y `data/metadata.json`. Si la web cambia de formato, faltan resultados o falla la lectura, el proceso falla y conserva el último historial guardado.
+Se probó la descarga desde GitHub Actions, pero SELAE respondió HTTP 403 a los runners alojados de GitHub. Para evitar presentar un proceso fallido como una automatización funcional, no hay una tarea programada activa. No se reemplaza el historial cuando no se puede completar la descarga y validación.
 
 - [Resultados oficiales de El Gordo de la Primitiva](https://www.loteriasyapuestas.es/es/gordo-primitiva/resultados)
-- [Workflow de actualización](https://github.com/danielMigales/GordoGPT/actions/workflows/update-results.yml)
-- [Historial de ejecuciones](https://github.com/danielMigales/GordoGPT/actions)
+- [Workflow de despliegue](https://github.com/danielMigales/GordoGPT/actions)
 
-La aplicación es estática: la actualización corre en GitHub Actions y después el despliegue publica los archivos en GitHub Pages. No se usa Vercel. La fecha y procedencia del historial se muestran en la página cuando existe el archivo de metadatos.
+### Ejecutar el verificador manualmente
+
+En un equipo con Python 3.12 o superior y acceso permitido a la web de SELAE:
+
+```bash
+python scripts/update_results.py
+```
+
+El proceso consulta las páginas oficiales de resultados del año en curso. Valida fechas, cinco números distintos entre 1 y 54 y clave entre 0 y 9. Solo después de validar el historial completo escribe `data/sorteos.json` y `data/metadata.json`. Si falla la lectura, conserva los datos anteriores.
+
+La aplicación es estática: después de una actualización local, hay que publicar los cambios en GitHub para que se reflejen en GitHub Pages. No se usa Vercel.
 
 ## Formato de importación manual
 
