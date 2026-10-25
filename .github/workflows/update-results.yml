@@ -1,0 +1,43 @@
+name: Actualizar resultados oficiales SELAE
+
+on:
+  schedule:
+    - cron: "15 3 * * 1"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/update_results.py"
+      - ".github/workflows/update-results.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-official-results
+  cancel-in-progress: false
+
+jobs:
+  update-results:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Descargar y validar resultados oficiales
+        run: python scripts/update_results.py
+      - name: Guardar cambios en el historial
+        run: |
+          if git diff --quiet -- data/sorteos.json data/metadata.json; then
+            echo "El historial ya está actualizado."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/sorteos.json data/metadata.json
+          git commit -m "Actualiza resultados oficiales de El Gordo"
+          git push
