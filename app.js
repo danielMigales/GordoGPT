@@ -4,6 +4,8 @@ const $ = id => document.getElementById(id);
 const STORAGE_KEY = "gordogpt-history-v2";
 let draws = [];
 let bundledDraws = [];
+let bundledMetadata = null;
+let historySource = "bundled";
 const esc = value => String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmtDate = date => new Intl.DateTimeFormat("es-ES",{dateStyle:"medium",timeZone:"UTC"}).format(new Date(date+"T12:00:00Z"));
 const fmtPercent = value => new Intl.NumberFormat("es-ES",{maximumFractionDigits:1}).format(value)+"%";
@@ -54,8 +56,13 @@ function renderAnalysis() {
 function render() {
   $("draw-count").textContent=draws.length;
   $("last-date").textContent=draws.length?fmtDate(draws.at(-1).date):"Sin datos";
+  const sourceNote = historySource === "official" && bundledMetadata
+    ? `Fuente: SELAE · ${bundledMetadata.drawCount} sorteos de ${bundledMetadata.year} · actualizado ${bundledMetadata.updatedAt ? new Date(bundledMetadata.updatedAt).toLocaleString("es-ES") : "sin fecha"}.`
+    : historySource === "local" ? "Historial recuperado del almacenamiento local de este navegador."
+    : historySource === "imported" ? "Historial importado por el usuario; no se ha verificado automáticamente con SELAE."
+    : "Datos incluidos en el repositorio; consulta la procedencia antes de usarlos.";
   $("data-status").textContent=draws.length
-    ? `Historial cargado: ${draws.length} sorteos con formato válido. La validación de formato no confirma que los resultados sean oficiales.`
+    ? `Historial cargado: ${draws.length} sorteos. ${sourceNote}`
     : "Historial vacío: importa resultados comprobados con la fuente oficial.";
   $("data-status").classList.toggle("status-ready",draws.length>0);
   if(draws.length>=2){
@@ -84,12 +91,16 @@ async function loadInitial() {
     const response=await fetch("./data/sorteos.json",{cache:"no-store"});
     if(!response.ok) throw new Error("No se pudo leer data/sorteos.json");
     bundledDraws=validateDraws(await response.json());
+    try {
+      const metadataResponse=await fetch("./data/metadata.json",{cache:"no-store"});
+      if(metadataResponse.ok) bundledMetadata=await metadataResponse.json();
+    } catch {}
     let stored=null;
     try { stored=localStorage.getItem(STORAGE_KEY); } catch {}
     if(stored){
-      try { draws=validateDraws(JSON.parse(stored)); $("import-status").textContent="Se ha recuperado el historial guardado en este navegador."; }
-      catch { draws=[...bundledDraws]; $("import-status").textContent="El historial local guardado no era válido; se ha cargado el archivo incluido."; }
-    } else { draws=[...bundledDraws]; $("import-status").textContent="Historial incluido cargado. Los datos tienen formato válido, pero no están verificados automáticamente con SELAE."; }
+      try { draws=validateDraws(JSON.parse(stored)); historySource="local"; $("import-status").textContent="Se ha recuperado el historial guardado en este navegador."; }
+      catch { draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled"; $("import-status").textContent="El historial local guardado no era válido; se ha cargado el archivo incluido."; }
+    } else { draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled"; $("import-status").textContent=bundledMetadata ? "Historial descargado y validado desde las páginas oficiales de SELAE." : "Historial incluido cargado; todavía no hay metadatos de verificación oficial."; }
   } catch(error) {
     $("import-status").textContent=`No se pudo cargar el historial inicial: ${error.message}`;
     draws=[];
@@ -104,6 +115,7 @@ $("file-input").addEventListener("change",async event=>{
     const validated=validateDraws(parsed);
     if(!validated.length) throw new Error("El archivo no contiene sorteos.");
     draws=validated;
+    historySource="imported";
     const saved=saveHistory();
     $("import-status").textContent=`Importación correcta: ${draws.length} sorteos. ${saved?"Historial guardado en este navegador.":"No se pudo guardar localmente; seguirá disponible mientras no cierres o recargues la página."}`;
     render();
@@ -128,6 +140,7 @@ $("export-csv-btn").addEventListener("click",()=>{
 });
 $("reset-btn").addEventListener("click",()=>{
   draws=[...bundledDraws];
+  historySource=bundledMetadata?"official":"bundled";
   try { localStorage.removeItem(STORAGE_KEY); } catch {}
   $("import-status").textContent="Se ha recuperado el historial incluido en la aplicación.";
   render();
