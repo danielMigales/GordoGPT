@@ -23,6 +23,20 @@ class OfficialResultParserTests(unittest.TestCase):
             "clave": 8,
         })
 
+    def test_parse_official_result_page_25_october(self):
+        html = """
+        <html><body>
+        <p>En el sorteo de El Gordo de la Primitiva del 25 de octubre de 2026,
+        la combinación ganadora ha correspondido a los siguientes números:</p>
+        <p>09 - 26 - 41 - 43 - 46 Número clave (reintegro): R(7)</p>
+        </body></html>
+        """
+        self.assertEqual(module.parse_draw(html), {
+            "date": "2026-10-25",
+            "numbers": [9, 26, 41, 43, 46],
+            "clave": 7,
+        })
+
     def test_listing_only_keeps_result_detail_links(self):
         html = """
         <a href="/es/gordo-primitiva/resultados/el-gordo-de-la-primitiva-resultados-del-18-de-octubre-de-2026">18/10</a>
