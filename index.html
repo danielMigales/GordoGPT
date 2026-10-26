@@ -30,6 +30,7 @@
     <section class="panel">
       <div class="section-heading"><div><p class="eyebrow">01 / COMBINACIONES</p><h2>Combinación del modelo</h2></div><button id="refresh-btn" class="button secondary" type="button">Recalcular análisis</button></div>
       <p class="muted">La combinación principal es reproducible con el mismo historial. Las alternativas se generan al azar dentro del universo elegido; no tienen más probabilidad matemática de ganar.</p>
+      <p class="small muted">«Recalcular análisis» vuelve a calcular estadísticas con los datos ya cargados; no descarga sorteos nuevos. La actualización automática está desactivada porque SELAE bloquea las peticiones de GitHub Actions (HTTP 403).</p>
       <div id="prediction" class="prediction"><p class="muted">Cargando datos…</p></div>
       <p id="model-note" class="small muted">Esperando historial suficiente.</p>
       <div class="alternative-controls">
@@ -85,7 +86,7 @@
         <button id="export-csv-btn" class="button secondary" type="button">Exportar CSV</button>
         <button id="reset-btn" class="button danger" type="button">Volver al historial incluido</button>
       </div>
-      <p id="import-status" class="small muted" aria-live="polite">Los 42 sorteos incluidos se han contrastado manualmente con las páginas oficiales de SELAE. La actualización automática está desactivada porque GitHub Actions recibió un 403 al acceder a SELAE.</p>
+      <p id="import-status" class="small muted" aria-live="polite">Los 43 sorteos incluidos, hasta el 25/10/2026, se han contrastado manualmente con las páginas oficiales de SELAE. La actualización automática está desactivada porque GitHub Actions recibió un 403 al acceder a SELAE.</p>
     </section>
     <footer><p>GordoGPT es un proyecto estadístico experimental e independiente. No predice resultados con certeza ni está afiliado a SELAE.</p><p><a href="https://www.loteriasyapuestas.es/es/gordo-primitiva/resultados" target="_blank" rel="noreferrer">Resultados oficiales SELAE</a> · <a href="https://github.com/danielMigales/GordoGPT" target="_blank" rel="noreferrer">Código fuente</a> · <a href="https://github.com/danielMigales/GordoGPT/actions" target="_blank" rel="noreferrer">Estado de pruebas y publicación</a></p></footer>
   </main>
