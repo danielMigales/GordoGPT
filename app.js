@@ -61,8 +61,15 @@ function render() {
     : historySource === "local" ? "Historial recuperado del almacenamiento local de este navegador."
     : historySource === "imported" ? "Historial importado por el usuario; no se ha verificado automáticamente con SELAE."
     : "Datos incluidos en el repositorio; consulta la procedencia antes de usarlos.";
+  const latestDate = draws.length ? draws.at(-1).date : null;
+  const today = new Date();
+  const todayIso = new Date(Date.UTC(today.getFullYear(),today.getMonth(),today.getDate())).toISOString().slice(0,10);
+  const daysSinceLatest = latestDate ? Math.floor((Date.parse(todayIso+"T00:00:00Z")-Date.parse(latestDate+"T00:00:00Z"))/86400000) : Infinity;
+  const staleWarning = daysSinceLatest > 8
+    ? ` ATENCIÓN: el último sorteo es del ${fmtDate(latestDate)}; el historial podría estar atrasado. Comprueba SELAE e importa los resultados oficiales.`
+    : "";
   $("data-status").textContent=draws.length
-    ? `Historial cargado: ${draws.length} sorteos. ${sourceNote}`
+    ? `Historial cargado: ${draws.length} sorteos. ${sourceNote}${staleWarning}`
     : "Historial vacío: importa resultados comprobados con la fuente oficial.";
   $("data-status").classList.toggle("status-ready",draws.length>0);
   if(draws.length>=2){
@@ -98,9 +105,26 @@ async function loadInitial() {
     let stored=null;
     try { stored=localStorage.getItem(STORAGE_KEY); } catch {}
     if(stored){
-      try { draws=validateDraws(JSON.parse(stored)); historySource="local"; $("import-status").textContent="Se ha recuperado el historial guardado en este navegador."; }
-      catch { draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled"; $("import-status").textContent="El historial local guardado no era válido; se ha cargado el archivo incluido."; }
-    } else { draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled"; $("import-status").textContent=bundledMetadata ? "Historial contrastado manualmente con las páginas oficiales de SELAE." : "Historial incluido cargado; todavía no hay metadatos de verificación oficial."; }
+      try {
+        const localDraws=validateDraws(JSON.parse(stored));
+        const localLatest=localDraws.at(-1)?.date || "";
+        const bundledLatest=bundledDraws.at(-1)?.date || "";
+        if(bundledLatest && localLatest < bundledLatest) {
+          draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled";
+          try { localStorage.setItem(STORAGE_KEY,JSON.stringify(draws)); } catch {}
+          $("import-status").textContent="Se ha sustituido el historial local antiguo por una versión incluida más reciente.";
+        } else {
+          draws=localDraws; historySource="local";
+          $("import-status").textContent="Se ha recuperado el historial guardado en este navegador.";
+        }
+      } catch {
+        draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled";
+        $("import-status").textContent="El historial local guardado no era válido; se ha cargado el archivo incluido.";
+      }
+    } else {
+      draws=[...bundledDraws]; historySource=bundledMetadata?"official":"bundled";
+      $("import-status").textContent=bundledMetadata ? "Historial contrastado manualmente con las páginas oficiales de SELAE." : "Historial incluido cargado; todavía no hay metadatos de verificación oficial.";
+    }
   } catch(error) {
     $("import-status").textContent=`No se pudo cargar el historial inicial: ${error.message}`;
     draws=[];
