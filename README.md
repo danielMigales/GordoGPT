@@ -15,7 +15,7 @@ Laboratorio estadístico experimental e independiente para **El Gordo de la Prim
 
 ## Estado y procedencia de los datos
 
-El historial incluido en `data/sorteos.json` contiene 42 sorteos de 2026, del 4 de enero al 18 de octubre. Los 42 registros se contrastaron manualmente con las páginas oficiales de SELAE, una por cada sorteo. La verificación está documentada en `data/metadata.json`.
+El historial incluido en `data/sorteos.json` contiene 43 sorteos de 2026, del 4 de enero al 25 de octubre. Los 43 registros se contrastaron manualmente con las páginas oficiales de SELAE, una por cada sorteo. La verificación está documentada en `data/metadata.json`.
 
 Se probó la descarga desde GitHub Actions, pero SELAE respondió HTTP 403 a los runners alojados de GitHub. Para evitar presentar un proceso fallido como una automatización funcional, no hay una tarea programada activa. El historial actual está verificado manualmente; las actualizaciones futuras necesitan ejecutarse desde un entorno con acceso permitido a SELAE.
 
